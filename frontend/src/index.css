@@ -7,6 +7,83 @@ body,
 #root {
   height: 100%;
 }
+
+/* 1. Use a more-intuitive box-sizing model */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* 2. Remove default margin */
+* {
+  margin: 0;
+}
+
+/* 3. Enable keyword animations */
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    interpolate-size: allow-keywords;
+  }
+}
+
+body {
+  /* 4. Add accessible line-height */
+  line-height: 1.5;
+  /* 5. Improve text rendering */
+  -webkit-font-smoothing: antialiased;
+}
+
+/* 6. Improve media defaults */
+img,
+picture,
+video,
+canvas,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+/* 7. Inherit fonts for form controls */
+input,
+button,
+textarea,
+select {
+  font: inherit;
+}
+
+/* 8. Avoid text overflows */
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  overflow-wrap: break-word;
+}
+
+/* 9. Improve line wrapping */
+p {
+  text-wrap: pretty;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  text-wrap: balance;
+}
+
+/*
+  10. Create a root stacking context
+*/
+#root,
+#__next {
+  isolation: isolate;
+}
+
 @font-face {
   font-family: "Public Sans";
   font-style: normal;
@@ -68,4 +145,74 @@ body,
   font-size: 0.75rem; /* 12px */
   line-height: 150%; /* 18px */
   letter-spacing: 0px;
+}
+
+svg {
+  vertical-align: middle;
+}
+
+svg.auto-size {
+  height: auto;
+  width: auto;
+  display: inline-block;
+  max-height: 100%;
+  max-width: 100%;
+}
+
+.fade-in {
+  animation: fadeIn 500ms ease-in-out;
+  animation-fill-mode: backwards;
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.slight-fade-in {
+  animation: fadeIn 500ms ease-in-out;
+  animation-fill-mode: backwards;
+}
+
+@keyframes slightFadeIn {
+  0% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.rotate-back {
+  animation: rotateBack 500ms ease-in-out;
+  animation-fill-mode: backwards;
+}
+
+.rotate180 {
+  animation: rotate180 500ms ease-in-out;
+  animation-fill-mode: forwards;
+}
+
+@keyframes rotate180 {
+  0% {
+    transform: rotate(180deg);
+  }
+
+  100% {
+    transform: rotate(0);
+  }
+}
+
+@keyframes rotateBack {
+  0% {
+    transform: rotate(0);
+  }
+
+  100% {
+    transform: rotate(180deg);
+  }
 }

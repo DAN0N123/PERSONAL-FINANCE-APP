@@ -1,21 +1,20 @@
+// svgo.config.js
 module.exports = {
   plugins: [
     {
       name: "preset-default",
       params: {
         overrides: {
-          // disable removing fill attributes
-          removeUnknownsAndDefaults: {
-            keepAttrs: ["fill"],
-          },
+          // ⛔️ Don't remove fill/stroke info
+          removeUnknownsAndDefaults: false,
+          removeUselessStrokeAndFill: false,
+          cleanupIDs: true,
+          removeViewBox: false,
         },
       },
     },
-    {
-      name: "convertColors",
-      params: {
-        currentColor: true, // converts solid fills to currentColor
-      },
-    },
+    // Optional: Keep style attributes if needed
+    "removeDimensions", // optional
+    "convertStyleToAttrs", // inline <style> -> attributes
   ],
 };

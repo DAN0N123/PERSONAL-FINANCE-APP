@@ -1,6 +1,7 @@
 import PropTypes from "prop-types";
 
 // Icon imports
+import { ReactComponent as LogoSmall } from "../../mentor-starter-code/assets/images/logo-small.svg";
 import { ReactComponent as LogoLarge } from "../../mentor-starter-code/assets/images/logo-large.svg";
 import { ReactComponent as IconOverview } from "../../mentor-starter-code/assets/images/icon-nav-overview.svg";
 import { ReactComponent as IconTransactions } from "../../mentor-starter-code/assets/images/icon-nav-transactions.svg";
@@ -8,8 +9,9 @@ import { ReactComponent as IconBudgets } from "../../mentor-starter-code/assets/
 import { ReactComponent as IconPots } from "../../mentor-starter-code/assets/images/icon-nav-pots.svg";
 import { ReactComponent as IconBills } from "../../mentor-starter-code/assets/images/icon-nav-recurring-bills.svg";
 import { ReactComponent as IconMinimize } from "../../mentor-starter-code/assets/images/icon-minimize-menu.svg";
-
+import { ReactComponent as IllustrationAuthentication } from "../../mentor-starter-code/assets/images/illustration-authentication.svg";
 const icons = {
+  "logo-small": LogoSmall,
   "logo-large": LogoLarge,
   overview: IconOverview,
   transactions: IconTransactions,
@@ -17,12 +19,14 @@ const icons = {
   pots: IconPots,
   bills: IconBills,
   "minimize-menu": IconMinimize,
+  authentication: IllustrationAuthentication,
 };
 
 export default function Icon({
   variant,
   width = "24px",
   height = "24px",
+  color = "",
   className = "",
   active = false,
   ...delegated
@@ -36,8 +40,8 @@ export default function Icon({
     <SvgIcon
       width={width}
       height={height}
-      className={`hover:fill-grey-100 ${className} ${
-        active ? "text-green" : null
+      className={`hover:fill-grey-100 ${color && `text-${color}`}${className} ${
+        active ? "text-green" : ""
       }`}
       {...delegated}
     />
@@ -50,4 +54,5 @@ Icon.propTypes = {
   className: PropTypes.string,
   height: PropTypes.string,
   active: PropTypes.bool,
+  color: PropTypes.string,
 };
