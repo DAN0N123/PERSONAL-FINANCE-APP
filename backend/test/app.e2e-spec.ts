@@ -1,40 +1,49 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { INestApplication } from '@nestjs/common';
+import { INestApplication, ValidationPipe } from '@nestjs/common';
 import * as request from 'supertest';
-import { App } from 'supertest/types';
-import { AppModule } from './../src/app.module';
+import { AppModule } from '../src/app.module';
 
-describe('AppController (e2e)', () => {
-  let app: INestApplication<App>;
+describe('AuthController (e2e)', () => {
+  let app: INestApplication;
 
-  beforeEach(async () => {
+  const testUser = {
+    name: 'TestUser_' + Date.now(),
+    email: 'testuser_' + Date.now() + '@example.com',
+    password: 'test1234',
+  };
+
+  beforeAll(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
       imports: [AppModule],
     }).compile();
 
     app = moduleFixture.createNestApplication();
+    app.useGlobalPipes(new ValidationPipe());
     await app.init();
   });
 
-  it('/ (GET)', () => {
-    return request(app.getHttpServer())
-      .get('/')
-      .expect(200)
-      .expect('Hello World!');
+  it('/auth/register (POST) should register a new user', async () => {
+    const response = await request(app.getHttpServer())
+      .post('/auth/register')
+      .send(testUser);
+
+    expect(response.status).toBe(201);
+    expect(response.body).toHaveProperty('id');
   });
-  it('/users (POST)', () => {
-    return request(app.getHttpServer())
-      .post('/users')
-      .send({ name: 'Filip', email: 'filip@example.com' })
-      .expect(201)
-      .expect((res) =>
-        expect(res.body).toEqual({
-          message: 'User created successfully!',
-          user: {
-            name: 'Filip',
-            email: 'filip@example.com',
-          },
-        }),
-      );
+
+  it('/auth/login (POST) should return an access token', async () => {
+    const response = await request(app.getHttpServer())
+      .post('/auth/login')
+      .send({
+        email: testUser.email,
+        password: testUser.password,
+      });
+
+    expect(response.status).toBe(201);
+    expect(response.body).toHaveProperty('access_token');
+  });
+
+  afterAll(async () => {
+    await app.close();
   });
 });

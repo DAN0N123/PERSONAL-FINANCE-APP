@@ -3,6 +3,9 @@ export default {
   content: ["./src/**/*.{html,js,jsx}"],
   theme: {
     extend: {
+      content: {
+        "password-msg": "'Password must be at least 8 characters'",
+      },
       colors: {
         white: "hsl(0, 0%, 100%)",
         beige: {

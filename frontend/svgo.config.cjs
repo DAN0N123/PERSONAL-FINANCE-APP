@@ -1,20 +1,21 @@
-// svgo.config.js
 module.exports = {
   plugins: [
     {
       name: "preset-default",
       params: {
         overrides: {
-          // ⛔️ Don't remove fill/stroke info
-          removeUnknownsAndDefaults: false,
+          // These preserve important attributes
           removeUselessStrokeAndFill: false,
-          cleanupIDs: true,
+          removeUnknownsAndDefaults: false,
           removeViewBox: false,
         },
       },
     },
-    // Optional: Keep style attributes if needed
-    "removeDimensions", // optional
-    "convertStyleToAttrs", // inline <style> -> attributes
+    {
+      name: "removeAttrs",
+      params: {
+        attrs: "(fill|stroke)",
+      },
+    },
   ],
 };

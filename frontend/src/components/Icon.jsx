@@ -26,7 +26,7 @@ export default function Icon({
   variant,
   width = "24px",
   height = "24px",
-  color = "",
+  color = "white",
   className = "",
   active = false,
   ...delegated
@@ -36,13 +36,13 @@ export default function Icon({
     console.warn(`Icon with variant "${variant}" not found.`);
     return null;
   }
+  const currentColor = active ? "hsl(177, 55%, 32%)" : color;
   return (
     <SvgIcon
       width={width}
       height={height}
-      className={`hover:fill-grey-100 ${color && `text-${color}`}${className} ${
-        active ? "text-green" : ""
-      }`}
+      style={{ fill: currentColor }}
+      className={`${className}`}
       {...delegated}
     />
   );

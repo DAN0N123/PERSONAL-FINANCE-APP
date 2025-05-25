@@ -1,11 +1,31 @@
 import { useState } from "react";
 import Icon from "./Icon";
-
-export default function Authentication() {
+import { Link, useNavigate } from "react-router-dom";
+export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
+  async function loginUser(email, password) {
+    const response = await fetch("http://localhost:3000/auth/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ email, password }),
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.message || "Login failed");
+    } else {
+      navigate("/");
+    }
+
+    localStorage.setItem("token", data.access_token);
+  }
 
   return (
     <div className="relative bg-[#F8F4F0] flex items-center justify-center h-full w-full overflow-hidden">
@@ -39,6 +59,7 @@ export default function Authentication() {
           className="w-full h-fit bg-white rounded-[12px] pl-[20px] pr-[20px] pt-[24px] pb-[24px] flex flex-col gap-[32px]"
           onSubmit={(e) => {
             e.preventDefault();
+            loginUser(email, password);
           }}
         >
           <p className="text-preset-1 text-grey-900"> Login </p>
@@ -80,7 +101,8 @@ export default function Authentication() {
                 />
                 {showPassword ? (
                   <button
-                    onClick={() => {
+                    onClick={(e) => {
+                      e.preventDefault();
                       setShowPassword(false);
                     }}
                   >
@@ -91,7 +113,8 @@ export default function Authentication() {
                   </button>
                 ) : (
                   <button
-                    onClick={() => {
+                    onClick={(e) => {
+                      e.preventDefault();
                       setShowPassword(true);
                     }}
                   >
@@ -110,10 +133,13 @@ export default function Authentication() {
               <p className="text-preset-4 text-grey-500">
                 Need to create an account?{" "}
               </p>
-              <button className="text-preset-4-bold text-grey-900 relative before:absolute before:w-full before:h-[2px] before:content-[''] before:bg-grey-900 before:bottom-0">
+              <Link
+                to="/signup"
+                className="text-preset-4-bold text-grey-900 relative before:absolute before:w-full before:h-[2px] before:content-[''] before:bg-grey-900 before:bottom-0"
+              >
                 {" "}
                 Sign up
-              </button>
+              </Link>
             </div>
           </div>
         </form>

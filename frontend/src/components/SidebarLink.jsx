@@ -19,7 +19,7 @@ export default function SidebarLink({ to, icon, text, animate = true }) {
 
           <div className="flex gap-[16px] text-black items-start">
             {icon && <Icon variant={icon} active={active} className="z-[10]" />}
-            {text && <p className="z-[10] leading-none mt-[2px]"> {text} </p>}
+            {text && <p className="z-[10] leading-none mt-[4px]"> {text} </p>}
           </div>
         </div>
       </Link>
@@ -29,7 +29,7 @@ export default function SidebarLink({ to, icon, text, animate = true }) {
     <Link to={to}>
       <div className="flex gap-[16px] hover:text-grey-100 items-start">
         {icon && <Icon variant={icon} />}
-        {text && <p className="leading-none mt-[2px]"> {text} </p>}
+        {text && <p className="leading-none mt-[4px]"> {text} </p>}
       </div>
     </Link>
   );

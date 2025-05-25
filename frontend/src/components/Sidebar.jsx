@@ -26,7 +26,7 @@ function Sidebar() {
             variant={minimized ? "logo-small" : "logo-large"}
             width={minimized ? "20px" : "100%"}
             height="100px"
-            className={minimized ? "" : "h-min"}
+            className="mb-[50px]"
           />
           <div className="flex flex-col gap-[48px] w-full">
             <SidebarLink
