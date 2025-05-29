@@ -12,7 +12,7 @@ function Sidebar() {
       <AnimatePresence mode="wait">
         <motion.div
           key={minimized ? "sidebar-minimized" : "sidebar-full"}
-          className={`will-change-[width] bg-grey-900 rounded-r-[16px] h-full flex-col justify-between p-[32px] pb-[64px] text-preset-3 text-gray-300 hidden xl:flex ${
+          className={`will-change-[width] bg-grey-900 rounded-r-[16px] h-full flex-col justify-between p-[32px] pb-[64px] text-preset-3 text-gray-300 hidden xl:flex z-[1000000] ${
             minimized ? "w-[88px] items-center" : "w-[300px] items-start"
           }`}
           layoutId="sidebar"
