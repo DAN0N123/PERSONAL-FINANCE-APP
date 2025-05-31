@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -19,5 +13,65 @@ model User {
   email     String   @unique
   password  String
   createdAt DateTime @default(now())
+  balance   Float?
+  income    Float?
+  expenses  Float?
+
+  pots    Pot[]
+  budgets Budget[]
+  bills   Bill[]
+
+  transactions             Transaction[] @relation("UserTransactions")
+  counterpartyTransactions Transaction[] @relation("CounterpartyTransactions")
 }
 
+model Pot {
+  id     Int    @id @default(autoincrement())
+  name   String
+  amount Float
+
+  user   User @relation(fields: [userId], references: [id])
+  userId Int
+}
+
+model Budget {
+  id       Int    @id @default(autoincrement())
+  category String
+  amount   Float
+
+  user   User @relation(fields: [userId], references: [id])
+  userId Int
+}
+
+enum BillStatus {
+  PAID
+  DUE
+  UPCOMING
+}
+
+model Bill {
+  id     Int    @id @default(autoincrement())
+  status   BillStatus
+  amount Float
+  user   User @relation(fields: [userId], references: [id])
+  userId Int
+}
+
+enum TransactionType {
+  INCOMING
+  OUTGOING
+}
+
+model Transaction {
+  id          Int             @id @default(autoincrement())
+  amount      Float
+  date        DateTime
+  description String?
+  type        TransactionType
+
+  userId Int
+  user   User @relation("UserTransactions", fields: [userId], references: [id])
+
+  counterpartyId Int
+  counterparty   User @relation("CounterpartyTransactions", fields: [counterpartyId], references: [id])
+}

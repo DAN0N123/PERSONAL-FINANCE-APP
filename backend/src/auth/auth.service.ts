@@ -9,13 +9,11 @@ export class AuthService {
     private prisma: PrismaService,
   ) {}
 
-  generateToken(user: { id: number; email: string }) {
-    return {
-      access_token: this.jwt.sign({
-        sub: user.id,
-        email: user.email,
-      }),
-    };
+  generateToken(user: { id: number; email: string }): string {
+    return this.jwt.sign({
+      sub: user.id,
+      email: user.email,
+    });
   }
 
   async register(name: string, email: string, plainPassword: string) {
@@ -35,10 +33,12 @@ export class AuthService {
   async login(email: string, plainPassword: string) {
     const user = await this.prisma.user.findUnique({ where: { email } });
     if (!user) throw new UnauthorizedException('Invalid credentials');
-
+  
     const isMatch = await bcrypt.compare(plainPassword, user.password);
     if (!isMatch) throw new UnauthorizedException('Invalid credentials');
-
-    return this.generateToken(user);
+  
+    const token = this.generateToken(user);
+    return { user: { id: user.id, email: user.email, name: user.name }, token };
   }
+  
 }

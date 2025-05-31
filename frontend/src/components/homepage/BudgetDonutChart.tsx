@@ -1,6 +1,7 @@
 import { PieChart, Pie, Cell } from "recharts";
+import React from "react";
 
-type Expense = { title: string; value: number };
+type Expense = { category: string; amount: number, id: number, userId: number};
 
 type Data = Expense[];
 
@@ -40,13 +41,13 @@ function BudgetDonutChart({
           data={data}
           innerRadius={innerRadius}
           outerRadius={outerRadius}
-          dataKey="value"
+          dataKey="amount"
           startAngle={90}
           endAngle={-270}
           stroke="none"
         >
           {data.map((entry, index) => (
-            <Cell key={`cell-${index}`} fill={colors[index % colors.length]} />
+            <Cell key={`cell-${index}`} fill={colors[index]} />
           ))}
         </Pie>
       </PieChart>
