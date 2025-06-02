@@ -12,8 +12,11 @@ import { ReactComponent as IconPots } from "../../../mentor-starter-code/assets/
 import { ReactComponent as IconBills } from "../../../mentor-starter-code/assets/images/icon-nav-recurring-bills.svg";
 import { ReactComponent as IconMinimize } from "../../../mentor-starter-code/assets/images/icon-minimize-menu.svg";
 import { ReactComponent as IllustrationAuthentication } from "../../../mentor-starter-code/assets/images/illustration-authentication.svg";
-
+import { ReactComponent as ArrowLeft } from "../../../mentor-starter-code/assets/images/icon-caret-left.svg";
+import { ReactComponent as ArrowRight } from "../../../mentor-starter-code/assets/images/icon-caret-right.svg";
 const icons = {
+  "arrow-left": ArrowLeft,
+  "arrow-right": ArrowRight,
   "logo-small": LogoSmall,
   "logo-large": LogoLarge,
   overview: IconOverview,
@@ -26,6 +29,8 @@ const icons = {
 };
 
 export type IconVariants =
+  | "arrow-left"
+  | "arrow-right"
   | "logo-small"
   | "logo-large"
   | "overview"

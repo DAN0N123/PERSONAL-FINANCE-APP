@@ -1,17 +1,22 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import Icon from "../reusable/Icon";
 import { Link, useNavigate } from "react-router-dom";
 import React from "react";
+import { UserContext } from "../misc/UserContext";
 export default function Login() {
   const [showPassword, setShowPassword] = useState<boolean>(false);
-
+  const userContext = useContext(UserContext);
+  if (!userContext) {
+    throw new Error("UserContext is not provided");
+  }
+  const { setUser } = userContext;
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const navigate = useNavigate();
   async function loginUser(email: string, password: string) {
     const response = await fetch("http://localhost:3000/auth/login", {
       method: "POST",
-      credentials: 'include',
+      credentials: "include",
       headers: {
         "Content-Type": "application/json",
       },
@@ -19,14 +24,12 @@ export default function Login() {
     });
 
     const data = await response.json();
-
     if (!response.ok) {
       throw new Error(data.message || "Login failed");
     } else {
+      setUser(data.user);
       navigate("/");
     }
-
-    localStorage.setItem("token", data.access_token);
   }
 
   return (

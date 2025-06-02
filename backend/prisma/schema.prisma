@@ -68,7 +68,7 @@ model Transaction {
   date        DateTime
   description String?
   type        TransactionType
-
+  category    String
   userId Int
   user   User @relation("UserTransactions", fields: [userId], references: [id])
 

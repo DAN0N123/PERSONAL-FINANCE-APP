@@ -4,28 +4,34 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 //COMPONENT IMPORTS
 import Homepage from "./components/homepage/Homepage";
 import Error from "./components/misc/Error";
-import Login from "./components/auth/Login.tsx"
+import Login from "./components/auth/Login.tsx";
 import SignUp from "./components/auth/SignUp";
+import Layout from "./components/misc/Layout.tsx";
+import TransactionsPage from "./components/transactions/TransactionsPage.tsx";
+import UserContextProvider from "./components/misc/UserContext.tsx";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Homepage />,
+    element: <Layout />,
+    children: [
+      { index: true, element: <Homepage /> },
+      { path: "overview", element: <Homepage /> },
+
+      { path: "transactions", element: <TransactionsPage /> },
+    ],
   },
-  { path: "/overview", element: <Homepage /> },
-  {
-    path: "/login",
-    element: <Login />,
-  },
-  {
-    path: "/signup",
-    element: <SignUp />,
-  },
+  { path: "login", element: <Login /> },
+  { path: "signup", element: <SignUp /> },
   { path: "*", element: <Error /> },
 ]);
 
 function App() {
-  return <RouterProvider router={router}></RouterProvider>;
+  return (
+    <UserContextProvider>
+      <RouterProvider router={router}></RouterProvider>
+    </UserContextProvider>
+  );
 }
 
 export default App;

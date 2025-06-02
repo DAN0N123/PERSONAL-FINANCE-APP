@@ -10,27 +10,27 @@ const colors = {
 };
 
 interface PotType {
-  id: number,
-  amount: number,
-  name: string,
-  userId: number,
+  id: number;
+  amount: number;
+  name: string;
+  userId: number;
 }
 
 const fetcher = (url: string) =>
   fetch(url, { credentials: "include" }).then((res) => res.json());
 
-
 export default function Pots() {
-  const { data: pots, error, isLoading } = useSWR<PotType[]>(
-    "http://localhost:3000/pots/get",
-    fetcher
-  );
-  
+  const {
+    data: pots,
+    error,
+    isLoading,
+  } = useSWR<PotType[]>("http://localhost:3000/pots/get", fetcher);
+
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Failed to load transactions.</div>;
 
-  
-  const total = pots && Math.round(pots.reduce( (acc, pot) => acc + pot.amount, 0))
+  const total =
+    pots && Math.round(pots.reduce((acc, pot) => acc + pot.amount, 0));
 
   return (
     <div className="rounded-[12px] flex flex-col gap-[12px] bg-white pt-[20px] pr-[24px] pb-[20px] pl-[24px] xl:pt-[30px] xl:pb-[30px] xl:pr-[36px] xl:pl-[36px]">
@@ -53,11 +53,11 @@ export default function Pots() {
           </div>
         </div>
         <div className="grid grid-cols-2 gap-[12px] md:flex-[2]">
-          {pots?.slice(0,4).map(({ name, amount }, index) => {
+          {pots?.slice(0, 4).map(({ name, amount }, index) => {
             const bgColor = colors[index];
             return (
               <div
-              key={index}
+                key={index}
                 className={`flex flex-col items-start gap-[8px] pl-[12px] relative before:content-[''] before:absolute before:top-0 before:bottom-0 before:left-0 before:w-[4px] before:rounded-full ${bgColor}`}
               >
                 <p className="text-preset-5 text-gray-500">{titleCase(name)}</p>
