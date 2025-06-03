@@ -1,9 +1,6 @@
 import React from "react";
 import useSWR from "swr";
 
-const fetcher = (url: string) =>
-  fetch(url, { credentials: "include" }).then((res) => res.json());
-
 type StatusType = "DUE" | "UPCOMING" | "PAID";
 
 interface BillType {
@@ -18,7 +15,7 @@ export default function Bills() {
     data: bills,
     error,
     isLoading,
-  } = useSWR<BillType[]>("http://localhost:3000/bills/get", fetcher);
+  } = useSWR<BillType[]>("http://localhost:3000/bills/get");
 
   if (error) return "an error has occured";
   if (isLoading) return "Loading...";

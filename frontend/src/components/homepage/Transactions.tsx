@@ -24,10 +24,7 @@ export default function Transactions() {
     data: transactions,
     error,
     isLoading,
-  } = useSWR<TransactionTypes[]>(
-    "http://localhost:3000/transactions/get",
-    fetcher
-  );
+  } = useSWR<TransactionTypes[]>("http://localhost:3000/transactions/get");
 
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Failed to load transactions.</div>;

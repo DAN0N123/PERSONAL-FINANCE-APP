@@ -16,15 +16,12 @@ interface PotType {
   userId: number;
 }
 
-const fetcher = (url: string) =>
-  fetch(url, { credentials: "include" }).then((res) => res.json());
-
 export default function Pots() {
   const {
     data: pots,
     error,
     isLoading,
-  } = useSWR<PotType[]>("http://localhost:3000/pots/get", fetcher);
+  } = useSWR<PotType[]>("http://localhost:3000/pots/get");
 
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Failed to load transactions.</div>;

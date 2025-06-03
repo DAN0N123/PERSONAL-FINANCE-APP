@@ -2,19 +2,61 @@ import useSWR from "swr";
 import { DateTime } from "luxon";
 import Pagination from "@mui/material/Pagination";
 import PaginationItem from "@mui/material/PaginationItem";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Icon from "../reusable/Icon";
 import Dropdown from "../reusable/Dropdown";
+import sortTransactions from "../../utils/sortTransactions";
+import { Transaction } from "../../types/Transaction";
+
+type Sort = "Latest" | "Oldest" | "A to Z" | "Z to A" | "Highest" | "Lowest";
+type Category =
+  | "All Transactions"
+  | "Entertainment"
+  | "Bills"
+  | "Groceries"
+  | "Dining Out"
+  | "Transportation"
+  | "Personal Care";
 
 export default function TransactionsPage() {
   const {
-    data: transactions,
+    data: transactionsInit,
     isLoading,
     error,
   } = useSWR("http://localhost:3000/transactions/get");
   const [page, setPage] = useState(1);
-  if (!transactions) return;
+  const [sort, setSort] = useState<Sort>("Latest");
+  const [category, setCategory] = useState<Category>("All Transactions");
+  const [transactions, setTransactions] = useState(transactionsInit);
+  const [search, setSearch] = useState<string>();
 
+  useEffect(() => {
+    if (!transactionsInit) return;
+
+    const categorizedTransactions =
+      category === "All Transactions"
+        ? transactionsInit
+        : transactionsInit.filter((transaction: Transaction) => {
+            return transaction.category === category;
+          });
+
+    const sortedTransactions = sortTransactions({
+      order: sort,
+      transactions: categorizedTransactions,
+    });
+
+    const finalTransactions = search
+      ? sortedTransactions.filter((transaction) => {
+          return transaction.counterparty.name
+            .toLowerCase()
+            .includes(search.toLowerCase());
+        })
+      : sortedTransactions;
+
+    setTransactions(finalTransactions);
+  }, [sort, category, search]);
+
+  if (!transactions) return;
   const totalPages = Math.ceil(transactions.length / 10);
 
   return (
@@ -26,6 +68,10 @@ export default function TransactionsPage() {
             <input
               type="text"
               placeholder="Search transaction"
+              value={search}
+              onChange={(e) => {
+                setSearch(e.target.value);
+              }}
               className="focus:outline-none mr-[-25px]"
             />
             <button className="w-[1rem] h-[1rem]">
@@ -47,6 +93,8 @@ export default function TransactionsPage() {
               "Highest",
               "Lowest",
             ]}
+            value={sort}
+            setValue={setSort}
           >
             {" "}
             <img
@@ -59,6 +107,7 @@ export default function TransactionsPage() {
             width={20}
             height={20}
             options={[
+              "All Transactions",
               "Entertainment",
               "Bills",
               "Groceries",
@@ -66,6 +115,8 @@ export default function TransactionsPage() {
               "Transportation",
               "Personal Care",
             ]}
+            value={category}
+            setValue={setCategory}
           >
             <img
               src="../../../mentor-starter-code/assets/images/icon-filter-mobile.svg"
@@ -73,49 +124,56 @@ export default function TransactionsPage() {
             />
           </Dropdown>
         </div>
-        {transactions
-          ?.slice(10 * (page - 1), 10 * (page - 1) + 10)
-          .map(({ counterparty, amount, date, category }, index) => {
-            const color = amount > 0 ? "text-green" : "text-gray-900";
-            const colors = {
-              0: "bg-green",
-              1: "bg-cyan",
-              2: "bg-navy",
-              3: "bg-yellow",
-            };
-            const beforeVisibility =
-              index === transactions.length - 1 && "before:hidden";
-            const dt = DateTime.fromISO(date);
-            const formatted = dt.toFormat("d LLLL yyyy");
-            return (
-              <div
-                key={index}
-                className={`flex justify-between items-center relative before:absolute pb-[12px] before:w-full before:left-0 before:bottom-0 before:bg-gray-300 before:h-[1px] ${beforeVisibility}`}
-              >
-                <div className="flex gap-[8px] items-center">
-                  <div
-                    className={`${
-                      colors[index % Object.keys(colors).length]
-                    } w-[32px] h-[32px] rounded-[50%]`}
-                  ></div>
+        {transactions.length > 0 ? (
+          transactions
+            ?.slice(10 * (page - 1), 10 * (page - 1) + 10)
+            .map(({ counterparty, amount, date, category }, index) => {
+              const color = amount > 0 ? "text-green" : "text-gray-900";
+              const colors = {
+                0: "bg-green",
+                1: "bg-cyan",
+                2: "bg-navy",
+                3: "bg-yellow",
+              };
+              const beforeVisibility =
+                index === transactions.length - 1 && "before:hidden";
+              const dt = DateTime.fromISO(date);
+              const formatted = dt.toFormat("d LLLL yyyy");
+              return (
+                <div
+                  key={index}
+                  className={`flex justify-between items-center relative before:absolute pb-[12px] before:w-full before:left-0 before:bottom-0 before:bg-gray-300 before:h-[1px] ${beforeVisibility}`}
+                >
+                  <div className="flex gap-[8px] items-center">
+                    <div
+                      className={`${
+                        colors[index % Object.keys(colors).length]
+                      } w-[32px] h-[32px] rounded-[50%]`}
+                    ></div>
+                    <div className="flex flex-col gap-[8px]">
+                      <p className="text-gray-900 text-preset-4-bold">
+                        {" "}
+                        {counterparty.name}{" "}
+                      </p>
+                      <p className="text-preset-5 text-grey-500">{category}</p>
+                    </div>
+                  </div>
                   <div className="flex flex-col gap-[8px]">
-                    <p className="text-gray-900 text-preset-4-bold">
+                    <p className={`text-preset-4-bold ${color}`}>
                       {" "}
-                      {counterparty.name}{" "}
+                      {amount > 0 ? "+" : "-"}${Math.abs(amount)}
                     </p>
-                    <p className="text-preset-5 text-grey-500">{category}</p>
+                    <p className="text-preset-5 text-grey-500">{formatted}</p>
                   </div>
                 </div>
-                <div className="flex flex-col gap-[8px]">
-                  <p className={`text-preset-4-bold ${color}`}>
-                    {" "}
-                    {amount > 0 ? "+" : "-"}${Math.abs(amount)}
-                  </p>
-                  <p className="text-preset-5 text-grey-500">{formatted}</p>
-                </div>
-              </div>
-            );
-          })}
+              );
+            })
+        ) : (
+          <p className="p-4 w-full text-center text-preset-3 text-gray-500">
+            {" "}
+            No transactions to display
+          </p>
+        )}
 
         <Pagination
           count={totalPages}
@@ -167,6 +225,7 @@ export default function TransactionsPage() {
               borderRadius: "0.5rem",
               border: "1px solid #bdbdbd",
               height: "40px",
+              color: "black",
               fontWeight: 500,
             },
             "& .Mui-selected": {

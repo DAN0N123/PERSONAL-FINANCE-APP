@@ -22,4 +22,10 @@ export class UserService {
     };
     return data;
   }
+  async getUser(userId: number) {
+    const user = await this.prisma.user.findUnique({ where: { id: userId } });
+    if (!user)
+      throw new NotFoundException(`User with id: ${userId} couldn't be found`);
+    return { user, ok: true };
+  }
 }

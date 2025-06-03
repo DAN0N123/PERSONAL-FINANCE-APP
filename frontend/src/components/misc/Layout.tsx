@@ -6,6 +6,7 @@ import { UserContext } from "./UserContext";
 
 export default function Layout() {
   const userContext = useContext(UserContext);
+
   if (!userContext || !userContext.user) {
     window.location.href = "/login";
     return null;
