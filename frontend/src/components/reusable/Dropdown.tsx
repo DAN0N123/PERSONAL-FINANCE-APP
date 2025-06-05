@@ -15,8 +15,6 @@ interface DropdownProps<T extends string> {
 export default function Dropdown<T extends string>({
   children,
   options,
-  width,
-  height,
   value,
   setValue,
 }: DropdownProps<T>) {
@@ -29,15 +27,17 @@ export default function Dropdown<T extends string>({
     setAnchorEl(null);
   };
 
-  console.log(value);
-
   return (
     <div>
       <Button
         id="basic-button"
         aria-controls={open ? "basic-menu" : undefined}
         aria-haspopup="true"
-        sx={{ minWidth: width, padding: 0, width: width, height: height }}
+        sx={{
+          minWidth: 0,
+          padding: 0,
+          textTransform: "none",
+        }}
         aria-expanded={open ? "true" : undefined}
         onClick={handleClick}
       >

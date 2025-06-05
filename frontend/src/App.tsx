@@ -9,6 +9,7 @@ import SignUp from "./components/auth/SignUp";
 import Layout from "./components/misc/Layout.tsx";
 import TransactionsPage from "./components/transactions/TransactionsPage.tsx";
 import UserContextProvider from "./components/misc/UserContext.tsx";
+import BudgetsPage from "./components/budgets/BudgetsPage.tsx";
 
 const router = createBrowserRouter([
   {
@@ -19,6 +20,7 @@ const router = createBrowserRouter([
       { path: "overview", element: <Homepage /> },
 
       { path: "transactions", element: <TransactionsPage /> },
+      { path: "budgets", element: <BudgetsPage /> },
     ],
   },
   { path: "login", element: <Login /> },
