@@ -3,17 +3,14 @@ import { Transaction } from "../../types/Transaction";
 interface SpendingTypes {
   budget: Budget | undefined;
   transactions: Transaction[];
-  color: string;
 }
 
 import { DateTime } from "luxon";
 
-export default function Spending({
-  budget,
-  transactions,
-  color,
-}: SpendingTypes) {
-  const bgColor = `bg-${color}`;
+export default function Spending({ budget, transactions }: SpendingTypes) {
+  const bgColor = `bg-${budget?.color}`;
+
+  console.log(budget?.category, bgColor);
 
   if (!budget || !transactions) return;
 
@@ -85,7 +82,7 @@ export default function Spending({
         </div>
         {transactions
           .slice(0, 3)
-          .map(({ counterparty, category, amount, date }, index) => {
+          .map(({ counterparty, amount, date }, index) => {
             const color = amount > 0 ? "text-green" : "text-gray-900";
             const beforeVisibility = index === 2 && "before:hidden";
             const dt = DateTime.fromISO(date);

@@ -44,21 +44,28 @@ async function main() {
 
   // Budgets (replaced with fixed values and upsert logic)
   const budgets = [
-    { id: 1, category: 'Entertainment', amount: 750, userId: 1 },
-    { id: 2, category: 'Bills', amount: 750, userId: 1 },
-    { id: 3, category: 'Groceries', amount: 75, userId: 1 },
-    { id: 4, category: 'Dining Out', amount: 75, userId: 1 },
-    { id: 5, category: 'Personal Care', amount: 100, userId: 1 },
-    { id: 6, category: 'Transportation', amount: 120, userId: 1 },
+    {
+      category: 'Entertainment',
+      amount: 750,
+      userId: 1,
+      color: 'green',
+    },
+    { category: 'Bills', amount: 750, userId: 1, color: 'yellow' },
+    { category: 'Groceries', amount: 75, userId: 1, color: 'cyan' },
+    { category: 'Dining Out', amount: 75, userId: 1, color: 'navy' },
+    { category: 'Personal Care', amount: 100, userId: 1, color: 'red' },
+    {
+      category: 'Transportation',
+      amount: 120,
+      userId: 1,
+      color: 'purple',
+    },
   ];
 
-  for (const budget of budgets) {
-    await prisma.budget.upsert({
-      where: { id: budget.id },
-      update: budget,
-      create: budget,
-    });
-  }
+  await prisma.budget.createMany({
+    data: budgets, // no `id` fields!
+    skipDuplicates: true, // avoids inserting if exact same record exists (on unique fields only)
+  });
 
   // Bills
   await prisma.bill.createMany({

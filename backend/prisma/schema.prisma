@@ -38,6 +38,7 @@ model Budget {
   id       Int    @id @default(autoincrement())
   category String
   amount   Float
+  color    String
 
   user   User @relation(fields: [userId], references: [id])
   userId Int
