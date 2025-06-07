@@ -4,10 +4,8 @@ import useSWR from "swr";
 import { Transaction } from "../../types/Transaction.ts";
 import { Budget } from "../../types/Budget";
 import { fetcher } from "../../utils/fetcher";
-import Dropdown from "../reusable/Dropdown.tsx";
+import BudgetForm from "./BudgetForm.tsx";
 import Spending from "./Spending.tsx";
-import isNumberKey from "../../utils/isNumberKey.js";
-import ColorDropdown from "../reusable/ColorDropdown.tsx";
 import { Color } from "../../types/Color.ts";
 import capitalizeFirstLetter from "../../utils/capitalizeFirstLetter.js";
 
@@ -66,8 +64,6 @@ export default function BudgetsPage() {
     return selectedColors[capitalizeFirstLetter(budget.color)];
   });
 
-  console.log(pieChartColors);
-
   async function addBudget(e) {
     e.preventDefault();
     const data = {
@@ -93,136 +89,18 @@ export default function BudgetsPage() {
   return (
     <div className="isolate relative flex flex-col gap-[32px] pb-[20%] md:pb-[10%] h-fit xl:pb-[24px] xl:pt-[24px] xl:pl-[16px] xl:pr-[48px] w-full xl:ml-[var(--sidebar-width)]">
       {modalActive && (
-        <>
-          <form
-            onSubmit={addBudget}
-            className="fixed top-1/2 translate-y-[-50%] left-1/2 translate-x-[-50%] w-[90%] rounded-[12px] pt-[24px] pb-[24px] pl-[20px] pr-[20px] bg-white z-[101] h-fit flex flex-col gap-[20px]"
-          >
-            <div className="flex w-full justify-between items-center">
-              <div className="text-gray-900 text-preset-2">Add New Budget</div>
-              <button
-                onClick={() => {
-                  setModalActive(false);
-                }}
-              >
-                <img
-                  src="../../../mentor-starter-code/assets/images/icon-close-modal.svg"
-                  className="w-[32px] h-[32px]"
-                />
-              </button>
-            </div>
-            <p className="text-preset-4 text-gray-500">
-              Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
-              Phasellus hendrerit. Pellentesque aliquet nibh nec urna. In nisi
-              neque, aliquet.
-            </p>
-            <div className="flex flex-col gap-[16px] w-full">
-              <div className="flex flex-col w-full gap-[8px]">
-                <p className="text-preset-5-bold text-gray-500">
-                  {" "}
-                  Budget Category
-                </p>
-                <Dropdown
-                  options={[
-                    "Entertainment",
-                    "Bills",
-                    "Groceries",
-                    "Dining Out",
-                    "Transportation",
-                    "Personal Care",
-                  ]}
-                  value={newCategory}
-                  setValue={setNewCategory}
-                >
-                  <div className="flex items-center gap-[8px] w-full">
-                    <div className="flex items-center w-full pl-[20px] pr-[20px] pt-[12px] pb-[12px] justify-between rounded-[8px] border-[1px] border-gray-500">
-                      <p className="text-nowrap text-gray-900 text-preset-4">
-                        {newCategory}
-                      </p>
-                      <img
-                        src="../../../mentor-starter-code/assets/images/icon-caret-down.svg"
-                        className="w-[16px] h-[16px]"
-                      />
-                    </div>
-                  </div>
-                </Dropdown>
-              </div>
-              <div className="flex flex-col w-full gap-[8px]">
-                <p className="text-preset-5-bold text-gray-500">
-                  {" "}
-                  Maximum Spending
-                </p>
-                <div className="relative flex items-baseline w-full pl-[20px] pr-[20px] pt-[12px] pb-[12px] justify-start gap-[8px] rounded-[8px] border-[1px] border-gray-500">
-                  <p className="text-preset-4 text-beige-500"> $</p>
-                  <input
-                    type="text"
-                    inputMode="numeric"
-                    value={newAmount}
-                    onKeyPress={(e) => {
-                      if (!isNumberKey(e)) {
-                        e.preventDefault();
-                      }
-                    }}
-                    onChange={(e) => {
-                      if (/^\d*$/.test(e.target.value)) {
-                        setNewAmount(parseFloat(e.target.value) || 0);
-                      }
-                    }}
-                    placeholder="e.g. 2000"
-                    className="placeholder:text-beige-500 text-gray-900 flex items-center hideIncrementer focus:outline-none"
-                  />
-                </div>
-              </div>
-              <div className="flex flex-col w-full gap-[8px]">
-                <p className="text-preset-5-bold text-gray-500">
-                  {" "}
-                  Budget Category
-                </p>
-                <ColorDropdown
-                  usedColors={usedColors}
-                  options={[
-                    "Green",
-                    "Yellow",
-                    "Cyan",
-                    "Navy",
-                    "Red",
-                    "Purple",
-                    "Turquoise",
-                  ]}
-                  value={newTagColor}
-                  setValue={setNewTagColor}
-                >
-                  <div className="flex items-center gap-[8px] w-full">
-                    <div className="flex items-center w-full pl-[20px] pr-[20px] pt-[12px] pb-[12px] justify-between rounded-[8px] border-[1px] border-gray-500">
-                      <div className="flex gap-[12px] items-center">
-                        <div
-                          className="rounded-[50%] w-[16px] h-[16px]"
-                          style={{
-                            backgroundColor: selectedColors[newTagColor],
-                          }}
-                        ></div>
-                        <p className="text-nowrap text-gray-900 text-preset-4">
-                          {newTagColor}
-                        </p>
-                      </div>
-                      <img
-                        src="../../../mentor-starter-code/assets/images/icon-caret-down.svg"
-                        className="w-[16px] h-[16px]"
-                      />
-                    </div>
-                  </div>
-                </ColorDropdown>
-              </div>
-            </div>
-            <button
-              className="bg-gray-900 rounded-[8px] p-[16px] text-preset-4-bold text-white"
-              type="submit"
-            >
-              Add Budget
-            </button>
-          </form>
-          <div className="fixed inset-0 bg-[#000000] opacity-[0.15] z-[100] mt-[-24px] ml-[-24px] mr-[-20px]"></div>
-        </>
+        <BudgetForm
+          title={"Add New Budget"}
+          submit={addBudget}
+          disableModal={() => setModalActive(false)}
+          categoryVal={newCategory}
+          colorVal={newTagColor}
+          amountVal={newAmount}
+          setCategory={setNewCategory}
+          setAmount={setNewAmount}
+          setColor={setNewTagColor}
+          usedColors={usedColors}
+        />
       )}
       <div className="flex w-full justify-between items-center">
         <p className="text-gray-900 text-preset-1"> Budgets</p>{" "}
@@ -236,7 +114,7 @@ export default function BudgetsPage() {
         </button>
       </div>
       <div className="flex flex-col gap-[24px] md:flex-row w-full bg-white pt-[24px] pb-[24px] pl-[20px] pr-[20px] rounded-[12px]">
-        <div className="relative grid place-content-center md:flex-[4] xl:flex-[3]">
+        <div className="relative grid place-content-center md:flex-[3]">
           <BudgetDonutChart
             limit={Math.round(limit)}
             spent={1273}
@@ -247,7 +125,7 @@ export default function BudgetsPage() {
             innerRadius={95}
             outerRadius={120}
           />
-          <div className="absolute inset-0 grid place-content-center">
+          <div className="absolute inset-0 grid place-content-center w-full">
             <BudgetDonutChart
               limit={Math.round(limit)}
               spent={12}
@@ -262,7 +140,7 @@ export default function BudgetsPage() {
             />
           </div>
         </div>
-        <div className="flex flex-col gap-[16px]">
+        <div className="flex flex-col gap-[16px] md:flex-[4]">
           <p className="text-preset-2 text-gray-900"> Spending Summary </p>
           {data.budgets?.slice(0, 4).map(({ category, amount }, index) => {
             const bgColor = colors[index];
@@ -298,6 +176,7 @@ export default function BudgetsPage() {
         </div>
       </div>
       <Spending
+        usedColors={usedColors}
         budget={data.budgets.find(
           (budget) => budget.category === "Entertainment"
         )}
@@ -308,6 +187,7 @@ export default function BudgetsPage() {
         )}
       />
       <Spending
+        usedColors={usedColors}
         budget={data.budgets.find((budget) => budget.category === "Bills")}
         transactions={data.transactions.filter(
           (transaction) =>
@@ -315,6 +195,7 @@ export default function BudgetsPage() {
         )}
       />
       <Spending
+        usedColors={usedColors}
         budget={data.budgets.find((budget) => budget.category === "Dining Out")}
         transactions={data.transactions.filter(
           (transaction) =>
@@ -323,6 +204,7 @@ export default function BudgetsPage() {
         )}
       />
       <Spending
+        usedColors={usedColors}
         budget={data.budgets.find(
           (budget) => budget.category === "Personal Care"
         )}

@@ -2,6 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from 'prisma/prisma.service';
 
 interface BudgetData {
+  id?: number;
   category: string;
   color: string;
   amount: number;
@@ -34,5 +35,27 @@ export class BudgetsService {
       },
     });
     return newBudget;
+  }
+
+  async editBudget(data: BudgetData) {
+    const budget = await this.prisma.budget.update({
+      where: { id: data.id },
+      data: {
+        category: data.category,
+        color: data.color,
+        amount: data.amount,
+        user: {
+          connect: { id: data.userId },
+        },
+      },
+    });
+    return budget;
+  }
+
+  async deleteBudget(id: number) {
+    const budgetId = Number(id);
+    const budget = await this.prisma.budget.delete({ where: { id: budgetId } });
+    console.log(budget);
+    return;
   }
 }
