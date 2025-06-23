@@ -28,7 +28,7 @@ export default function BudgetForm({
     <>
       <form
         onSubmit={submit}
-        className="fixed top-1/2 translate-y-[-50%] left-1/2 translate-x-[-50%] w-[90%] rounded-[12px] pt-[24px] pb-[24px] pl-[20px] pr-[20px] bg-white z-[101] h-fit flex flex-col gap-[20px]"
+        className="fixed top-1/2 translate-y-[-50%] left-1/2 translate-x-[-50%] w-[90%] rounded-[12px] pt-[24px] pb-[24px] pl-[20px] pr-[20px] bg-white z-[101] h-fit flex flex-col gap-[20px] xl:ml-[var(--sidebar-width)] xl:w-[50%]"
       >
         <div className="flex w-full justify-between items-center">
           <div className="text-gray-900 text-preset-2">{title}</div>

@@ -34,12 +34,30 @@ async function main() {
   );
 
   // Pots
-  await prisma.pot.createMany({
-    data: Array.from({ length: 50 }).map(() => ({
-      name: faker.word.words(2),
-      amount: Number(faker.finance.amount({ min: 10, max: 500, dec: 2 })),
+
+  const pots = [
+    {
+      name: 'Savings',
+      amount: 159,
+      target: 2000,
       userId: 1,
-    })),
+      color: 'green',
+    },
+    {
+      name: 'Concert Ticket',
+      amount: 110,
+      target: 150,
+      userId: 1,
+      color: 'yellow',
+    },
+    { name: 'Gift', amount: 40, target: 60, userId: 1, color: 'cyan' },
+    { name: 'New Laptop', amount: 10, target: 1000, userId: 1, color: 'navy' },
+    { name: 'Holiday', amount: 531, target: 1440, userId: 1, color: 'red' },
+  ];
+
+  await prisma.pot.createMany({
+    data: pots,
+    skipDuplicates: true,
   });
 
   // Budgets (replaced with fixed values and upsert logic)

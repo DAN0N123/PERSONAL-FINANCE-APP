@@ -4,19 +4,16 @@ import Transactions from "./Transactions";
 import Budgets from "./Budgets";
 import Bills from "./RecurringBills";
 import useSWR from "swr";
-
-interface UserData {
-  balance: string;
-  income: string;
-  expenses: string;
-}
+import { User } from "../../types/User";
 
 export default function Homepage() {
   const {
     data: userData,
     error,
     isLoading,
-  } = useSWR<UserData>("http://localhost:3000/user/getData");
+  } = useSWR<Pick<User, "balance" | "income" | "expenses">>(
+    "http://localhost:3000/user/getData"
+  );
 
   if (error) return "an error has occured";
   if (isLoading) return "Loading...";
@@ -28,17 +25,17 @@ export default function Homepage() {
         <Tile
           variant="dark"
           title="Current Balance"
-          value={userData?.balance || "-"}
+          value={String(userData?.balance) || "-"}
         ></Tile>
         <Tile
           variant="light"
           title="Income"
-          value={userData?.income || "-"}
+          value={String(userData?.income) || "-"}
         ></Tile>
         <Tile
           variant="light"
           title="Expenses"
-          value={userData?.expenses || "-"}
+          value={String(userData?.expenses) || "-"}
         ></Tile>
       </div>
       <div className="flex flex-col gap-[32px] xl:flex-row">

@@ -16,9 +16,6 @@ interface TransactionTypes {
   user: Record<string, any>;
 }
 
-const fetcher = (url: string) =>
-  fetch(url, { credentials: "include" }).then((res) => res.json());
-
 export default function Transactions() {
   const {
     data: transactions,

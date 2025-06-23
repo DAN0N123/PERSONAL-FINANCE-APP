@@ -7,6 +7,7 @@ import Icon from "../reusable/Icon";
 import Dropdown from "../reusable/Dropdown";
 import sortTransactions from "../../utils/sortTransactions";
 import { Transaction } from "../../types/Transaction";
+import useQuery from "../../hooks/useQuery";
 
 type Sort = "Latest" | "Oldest" | "A to Z" | "Z to A" | "Highest" | "Lowest";
 type Category =
@@ -17,6 +18,25 @@ type Category =
   | "Dining Out"
   | "Transportation"
   | "Personal Care";
+
+const sortArray: Sort[] = [
+  "Latest",
+  "Oldest",
+  "A to Z",
+  "Z to A",
+  "Highest",
+  "Lowest",
+];
+
+const categoryArray: Category[] = [
+  "All Transactions",
+  "Entertainment",
+  "Bills",
+  "Groceries",
+  "Dining Out",
+  "Transportation",
+  "Personal Care",
+];
 
 export default function TransactionsPage() {
   const {
@@ -29,6 +49,22 @@ export default function TransactionsPage() {
   const [category, setCategory] = useState<Category>("All Transactions");
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [search, setSearch] = useState<string>();
+
+  let query = useQuery();
+
+  useEffect(() => {
+    const category = query.get("category");
+    const sort = query.get("sort");
+
+    if (category && categoryArray.includes(category as Category)) {
+      const category = query.get("category");
+      setCategory(category as Category);
+    }
+    if (sort && sortArray.includes(sort as Sort)) {
+      const sort = query.get("sort");
+      setSort(sort as Sort);
+    }
+  }, [query]);
 
   useEffect(() => {
     if (!transactionsInit) return;

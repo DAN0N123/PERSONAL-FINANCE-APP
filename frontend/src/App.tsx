@@ -10,6 +10,7 @@ import Layout from "./components/misc/Layout.tsx";
 import TransactionsPage from "./components/transactions/TransactionsPage.tsx";
 import UserContextProvider from "./components/misc/UserContext.tsx";
 import BudgetsPage from "./components/budgets/BudgetsPage.tsx";
+import PotsPage from "./components/pots/PotsPage.tsx";
 
 const router = createBrowserRouter([
   {
@@ -21,6 +22,7 @@ const router = createBrowserRouter([
 
       { path: "transactions", element: <TransactionsPage /> },
       { path: "budgets", element: <BudgetsPage /> },
+      { path: "pots", element: <PotsPage /> },
     ],
   },
   { path: "login", element: <Login /> },

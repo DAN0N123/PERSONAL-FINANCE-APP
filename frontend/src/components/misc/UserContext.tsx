@@ -1,14 +1,11 @@
 import { createContext, useState, ReactNode, useEffect } from "react";
+import { User } from "../../types/User";
 
-type User = {
-  id: number;
-  email: string;
-  name: string;
-};
+type ContextUser = Pick<User, "id" | "email" | "name">;
 
 type UserContextType = {
-  user: User | undefined;
-  setUser: React.Dispatch<React.SetStateAction<User | undefined>>;
+  user: ContextUser | undefined;
+  setUser: React.Dispatch<React.SetStateAction<ContextUser | undefined>>;
 };
 
 export const UserContext = createContext<UserContextType | undefined>(

@@ -1,6 +1,7 @@
 import React from "react";
 import BudgetDonutChart from "./BudgetDonutChart";
 import useSWR from "swr";
+import { Budget } from "../../types/Budget";
 
 const colors = {
   0: "before:bg-green",
@@ -8,19 +9,13 @@ const colors = {
   2: "before:bg-navy",
   3: "before:bg-yellow",
 };
-interface BudgetType {
-  id: number;
-  amount: number;
-  category: string;
-  userId: number;
-}
 
 export default function Transactions() {
   const {
     data: budgets,
     error,
     isLoading,
-  } = useSWR<BudgetType[]>("http://localhost:3000/budgets/get");
+  } = useSWR<Omit<Budget, "color">[]>("http://localhost:3000/budgets/get");
 
   if (isLoading || !budgets) return <div>Loading...</div>;
   if (error) return <div>Failed to load transactions.</div>;

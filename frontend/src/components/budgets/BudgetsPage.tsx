@@ -40,6 +40,7 @@ export default function BudgetsPage() {
   );
 
   const [modalActive, setModalActive] = useState(false);
+
   const [newCategory, setNewCategory] = useState("Entertainment");
   const [newAmount, setNewAmount] = useState<number | string>("");
   const [newTagColor, setNewTagColor] = useState<Color>("Green");
@@ -113,7 +114,7 @@ export default function BudgetsPage() {
           + Add New Budget
         </button>
       </div>
-      <div className="flex flex-col gap-[24px] md:flex-row w-full bg-white pt-[24px] pb-[24px] pl-[20px] pr-[20px] rounded-[12px]">
+      <div className="flex flex-col gap-[24px] md:flex-row w-full bg-white pt-[24px] pb-[24px] pl-[20px] pr-[20px] rounded-[12px] xl:pt-[40px] xl:pb-[40px] xl:pl-[10%] xl:pr-[10%]">
         <div className="relative grid place-content-center md:flex-[3]">
           <BudgetDonutChart
             limit={Math.round(limit)}
@@ -206,11 +207,11 @@ export default function BudgetsPage() {
       <Spending
         usedColors={usedColors}
         budget={data.budgets.find(
-          (budget) => budget.category === "Personal Care"
+          (budget) => budget.category === "Transportation"
         )}
         transactions={data.transactions.filter(
           (transaction) =>
-            transaction.category === "Personal Care" &&
+            transaction.category === "Transportation" &&
             transaction.type === "OUTGOING"
         )}
       />

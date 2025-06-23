@@ -6,12 +6,13 @@ import Button from "@mui/material/Button";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import { Color } from "../../types/Color";
+import { Link } from "react-router-dom";
 
-interface SpendingTypes {
+type Spending = {
   usedColors: string[];
   budget: Budget | undefined;
   transactions: Transaction[];
-}
+};
 
 import { DateTime } from "luxon";
 import BudgetForm from "./BudgetForm";
@@ -21,7 +22,7 @@ export default function Spending({
   budget,
   transactions,
   usedColors,
-}: SpendingTypes) {
+}: Spending) {
   const [modal, setModal] = useState("");
 
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -119,7 +120,7 @@ export default function Spending({
       )}
       {modal === "Delete Budget" && (
         <>
-          <div className="fixed top-1/2 translate-y-[-50%] left-1/2 translate-x-[-50%] w-[90%] rounded-[12px] pt-[24px] pb-[24px] pl-[20px] pr-[20px] bg-white z-[101] h-fit flex flex-col gap-[20px]">
+          <div className="fixed top-1/2 translate-y-[-50%] left-1/2 translate-x-[-50%] w-[90%] rounded-[12px] pt-[24px] pb-[24px] pl-[20px] pr-[20px] bg-white z-[101] h-fit flex flex-col gap-[20px] xl:ml-[var(--sidebar-width)] xl:w-[50%]">
             <div className="flex w-full justify-between items-center">
               <div className="text-gray-900 text-preset-2">
                 Delete '{budget.category}'?
@@ -263,13 +264,16 @@ export default function Spending({
       <div className="bg-beige-100 rounded-[12px] p-[16px] flex flex-col gap-[20px]">
         <div className="flex w-full justify-between items-center">
           <p className="text-gray-900 text-preset-3">Latest Spending</p>
-          <div className="flex gap-[12px] items-center">
+          <Link
+            to={`/transactions?category=${budget.category}`}
+            className="flex gap-[12px] items-center"
+          >
             <p className="text-gray-500 text-preset-4">See all</p>
             <img
               src="../../../mentor-starter-code/assets/images/icon-caret-right.svg"
               className="w-[12px] h-[12px]"
             />
-          </div>
+          </Link>
         </div>
         {transactions
           .slice(0, 3)
