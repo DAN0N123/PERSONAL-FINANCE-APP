@@ -1,6 +1,7 @@
 import React from "react";
 import useSWR from "swr";
 import { DateTime } from "luxon";
+import { Link } from "react-router-dom";
 
 type TransactionType = "INCOMING" | "OUTGOING";
 
@@ -30,10 +31,13 @@ export default function Transactions() {
     <div className="rounded-[12px] flex flex-col gap-[32px] bg-white pt-[20px] pr-[24px] pb-[20px] pl-[24px] xl:pt-[30px] xl:pb-[30px] xl:pr-[36px] xl:pl-[36px]">
       <div className="flex w-full justify-between items-center">
         <p className="text-preset-2 text-gray-900"> Transactions </p>
-        <div className="text-preset-4 text-gray-500 flex gap-[16px]">
+        <Link
+          to={"/transactions"}
+          className="text-preset-4 text-gray-500 flex gap-[16px]"
+        >
           <p>View All</p>
           <img src="../../mentor-starter-code/assets/images/icon-caret-right.svg" />
-        </div>
+        </Link>
       </div>
       {transactions
         ?.slice(0, 6)

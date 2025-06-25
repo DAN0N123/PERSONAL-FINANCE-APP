@@ -2,6 +2,7 @@ import React from "react";
 import BudgetDonutChart from "./BudgetDonutChart";
 import useSWR from "swr";
 import { Budget } from "../../types/Budget";
+import { Link } from "react-router-dom";
 
 const colors = {
   0: "before:bg-green",
@@ -27,10 +28,13 @@ export default function Transactions() {
       <div className="rounded-[12px] flex flex-col gap-[24px] bg-white pt-[20px] pr-[24px] pb-[20px] pl-[24px] xl:gap-[50px] xl:pt-[30px] xl:pb-[50px] xl:pr-[36px] xl:pl-[36px]">
         <div className="flex w-full justify-between items-center">
           <p className="text-preset-2 text-gray-900"> Budgets </p>
-          <div className="text-preset-4 text-gray-500 flex gap-[16px]">
+          <Link
+            to={"/budgets"}
+            className="text-preset-4 text-gray-500 flex gap-[16px]"
+          >
             <p>See Details</p>
             <img src="../../mentor-starter-code/assets/images/icon-caret-right.svg" />
-          </div>
+          </Link>
         </div>
 
         <div className="flex flex-col gap-[24px] md:flex-row w-full">

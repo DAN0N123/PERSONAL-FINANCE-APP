@@ -7,15 +7,17 @@ export class UserController {
 
   @Get('/getData')
   @UseGuards(JwtAuthGuard)
-  async getData(@Request() req) {
+  async getData(@Request() req: { user: { id: number } }) {
     const userId = req.user.id;
-    return this.userService.getData(userId);
+    const result = await this.userService.getData(userId);
+    return { ok: true, result: result };
   }
 
   @Get('/getUser')
   @UseGuards(JwtAuthGuard)
-  async getUser(@Request() req) {
+  async getUser(@Request() req: { user: { id: number } }) {
     const userId = req.user.id;
-    return this.userService.getUser(userId);
+    const result = await this.userService.getUser(userId);
+    return { ok: true, result: result };
   }
 }

@@ -33,12 +33,11 @@ export class AuthService {
   async login(email: string, plainPassword: string) {
     const user = await this.prisma.user.findUnique({ where: { email } });
     if (!user) throw new UnauthorizedException('Invalid credentials');
-  
+
     const isMatch = await bcrypt.compare(plainPassword, user.password);
     if (!isMatch) throw new UnauthorizedException('Invalid credentials');
-  
+
     const token = this.generateToken(user);
     return { user: { id: user.id, email: user.email, name: user.name }, token };
   }
-  
 }

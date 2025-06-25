@@ -12,16 +12,16 @@ const selectedColors = {
   Turquoise: "hsl(180, 16%, 42%)",
 };
 
-export default function BudgetForm({
+export default function PotsForm({
   title,
   submit,
   disableModal,
-  categoryVal,
+  nameVal,
   colorVal,
-  amountVal,
-  setCategory,
+  targetVal,
+  setName,
   setColor,
-  setAmount,
+  setTarget,
   usedColors,
   buttonText,
 }) {
@@ -44,33 +44,31 @@ export default function BudgetForm({
           Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Phasellus
           hendrerit. Pellentesque aliquet nibh nec urna. In nisi neque, aliquet.
         </p>
-        <div className="flex flex-col gap-[16px] w-full">
+        <div className="flex flex-col gap-[24px] w-full">
           <div className="flex flex-col w-full gap-[8px]">
             <p className="text-preset-5-bold text-gray-500"> Budget Category</p>
-            <Dropdown
-              options={[
-                "Entertainment",
-                "Bills",
-                "Groceries",
-                "Dining Out",
-                "Transportation",
-                "Personal Care",
-              ]}
-              value={categoryVal}
-              setValue={setCategory}
-            >
-              <div className="flex items-center gap-[8px] w-full">
-                <div className="flex items-center w-full pl-[20px] pr-[20px] pt-[12px] pb-[12px] justify-between rounded-[8px] border-[1px] border-gray-500">
-                  <p className="text-nowrap text-gray-900 text-preset-4">
-                    {categoryVal}
-                  </p>
-                  <img
-                    src="../../../mentor-starter-code/assets/images/icon-caret-down.svg"
-                    className="w-[16px] h-[16px]"
-                  />
-                </div>
+            <div className="flex items-center gap-[8px] w-full">
+              <div className="relative flex items-center w-full pl-[20px] pr-[20px] pt-[12px] pb-[12px] justify-between rounded-[8px] border-[1px] border-gray-500">
+                <input
+                  type="text"
+                  className="text-nowrap text-gray-900 text-preset-4 h-full w-full focus:outline-none"
+                  value={nameVal}
+                  maxLength={30}
+                  onChange={(e) => {
+                    setName(e.target.value);
+                  }}
+                  placeholder="e.g. Rainy Days"
+                />
+                <p
+                  className={`text-preset-5 ${
+                    nameVal.length < 30 ? "text-gray-500" : "text-red"
+                  } absolute right-0 bottom-[-5px] translate-y-[100%]`}
+                >
+                  {" "}
+                  {nameVal.length} of 30 characters used
+                </p>
               </div>
-            </Dropdown>
+            </div>
           </div>
           <div className="flex flex-col w-full gap-[8px]">
             <p className="text-preset-5-bold text-gray-500">
@@ -83,7 +81,7 @@ export default function BudgetForm({
                 type="text"
                 required
                 inputMode="numeric"
-                value={amountVal}
+                value={targetVal}
                 onKeyPress={(e) => {
                   if (!isNumberKey(e)) {
                     e.preventDefault();
@@ -91,7 +89,7 @@ export default function BudgetForm({
                 }}
                 onChange={(e) => {
                   if (/^\d*$/.test(e.target.value)) {
-                    setAmount(parseFloat(e.target.value) || 0);
+                    setTarget(parseFloat(e.target.value) || 0);
                   }
                 }}
                 placeholder="e.g. 2000"

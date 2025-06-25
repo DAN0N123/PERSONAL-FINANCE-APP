@@ -25,37 +25,42 @@ export class BudgetsController {
 
   @Get('/get')
   @UseGuards(JwtAuthGuard)
-  async getBudgets(@Request() req) {
+  async getBudgets(@Request() req: { user: { id: number } }) {
     const userId = req.user.id;
     const budgets = await this.budgetsService.getBudgets(userId);
-    return budgets;
+    return { ok: true, result: budgets };
   }
 
   @Post('/add')
   @UseGuards(JwtAuthGuard)
-  async addBudget(@Request() req, @Body() reqData: BudgetData) {
+  async addBudget(
+    @Request() req: { user: { id: number } },
+    @Body() reqData: BudgetData,
+  ) {
     const userId = req.user.id;
     const data = { ...reqData, userId };
 
     const newBudget = await this.budgetsService.addBudget(data);
-    return { ok: true, newBudget };
+    return { ok: true, result: newBudget };
   }
 
   @Put('/edit')
   @UseGuards(JwtAuthGuard)
-  async editBudget(@Request() req, @Body() reqData: BudgetData) {
+  async editBudget(
+    @Request() req: { user: { id: number } },
+    @Body() reqData: BudgetData,
+  ) {
     const userId = req.user.id;
     const data = { ...reqData, userId };
 
     const budget = await this.budgetsService.editBudget(data);
-    return { ok: true, budget };
+    return { ok: true, result: budget };
   }
 
   @Delete(':id')
   @UseGuards(JwtAuthGuard)
   async deleteBudget(@Param('id') id: number) {
     await this.budgetsService.deleteBudget(id);
-
     return { ok: true };
   }
 }

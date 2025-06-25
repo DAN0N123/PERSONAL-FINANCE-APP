@@ -1,13 +1,13 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from 'prisma/prisma.service';
 
-interface BudgetData {
+type BudgetData = {
   id?: number;
   category: string;
   color: string;
   amount: number;
   userId: number;
-}
+};
 
 @Injectable()
 export class BudgetsService {
@@ -55,7 +55,6 @@ export class BudgetsService {
   async deleteBudget(id: number) {
     const budgetId = Number(id);
     const budget = await this.prisma.budget.delete({ where: { id: budgetId } });
-    console.log(budget);
-    return;
+    return budget;
   }
 }

@@ -1,30 +1,18 @@
 import React from "react";
 import useSWR from "swr";
 import titleCase from "../../utils/titleCase";
-
-const colors = {
-  0: "before:bg-green",
-  1: "before:bg-cyan",
-  2: "before:bg-navy",
-  3: "before:bg-yellow",
-};
-
-interface PotType {
-  id: number;
-  amount: number;
-  name: string;
-  userId: number;
-}
+import { Link } from "react-router-dom";
+import { Pot } from "../../types/Pot";
 
 export default function Pots() {
   const {
     data: pots,
     error,
     isLoading,
-  } = useSWR<PotType[]>("http://localhost:3000/pots/get");
+  } = useSWR<Omit<Pot, "target">[]>("http://localhost:3000/pots/get");
 
   if (isLoading) return <div>Loading...</div>;
-  if (error) return <div>Failed to load transactions.</div>;
+  if (error) return <div>Failed to load pots.</div>;
 
   const total =
     pots && Math.round(pots.reduce((acc, pot) => acc + pot.amount, 0));
@@ -33,10 +21,13 @@ export default function Pots() {
     <div className="rounded-[12px] flex flex-col gap-[12px] bg-white pt-[20px] pr-[24px] pb-[20px] pl-[24px] xl:pt-[30px] xl:pb-[30px] xl:pr-[36px] xl:pl-[36px]">
       <div className="flex w-full justify-between items-center">
         <p className="text-preset-2 text-gray-900"> Pots </p>
-        <div className="text-preset-4 text-gray-500 flex gap-[16px]">
+        <Link
+          to={"/pots"}
+          className="text-preset-4 text-gray-500 flex gap-[16px]"
+        >
           <p>See Details</p>
           <img src="../../mentor-starter-code/assets/images/icon-caret-right.svg" />
-        </div>
+        </Link>
       </div>
       <div className="flex flex-col gap-[12px] md:flex-row md:gap-[24px]">
         <div className="bg-beige-100 rounded-[12px] flex justify-start gap-[16px] p-4 md:flex-[1]">
@@ -50,11 +41,11 @@ export default function Pots() {
           </div>
         </div>
         <div className="grid grid-cols-2 gap-[12px] md:flex-[2]">
-          {pots?.slice(0, 4).map(({ name, amount }, index) => {
-            const bgColor = colors[index];
+          {pots?.slice(0, 4).map(({ name, amount, color }, index) => {
+            const bgColor = `before:bg-${color}`;
             return (
               <div
-                key={index}
+                key={index + name}
                 className={`flex flex-col items-start gap-[8px] pl-[12px] relative before:content-[''] before:absolute before:top-0 before:bottom-0 before:left-0 before:w-[4px] before:rounded-full ${bgColor}`}
               >
                 <p className="text-preset-5 text-gray-500">{titleCase(name)}</p>

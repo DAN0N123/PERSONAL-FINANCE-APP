@@ -31,10 +31,13 @@ export default function UserContextProvider({ children }: Props) {
       if (!result.ok) {
         setUser(undefined);
         localStorage.setItem("user", "");
+      } else {
+        setUser(result.result);
       }
     }
     fetchUser();
   }, []);
+
   useEffect(() => {
     if (user) {
       localStorage.setItem("user", JSON.stringify(user));
