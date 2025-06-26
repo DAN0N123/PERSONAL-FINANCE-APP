@@ -5,7 +5,7 @@ export default function BillList({ bills, page }) {
     <>
       {bills.length > 0 ? (
         bills
-          ?.slice(10 * (page - 1), 10 * (page - 1) + 10)
+          ?.slice(8 * (page - 1), 8 * (page - 1) + 8)
           .map(
             ({ payee, amount, status, type, dueDay, dueExactDate }, index) => {
               const color = status === "DUE" ? "text-red" : "text-gray-900";
