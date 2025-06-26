@@ -65,8 +65,8 @@ export default function Icon({
     <SvgIcon
       width={width}
       height={height}
-      style={{ fill: currentColor }}
-      className={`${className}`}
+      style={{ fill: currentColor, minWidth: width, minHeight: height }}
+      className={`${className} shrink-0`}
       {...delegated}
     />
   );

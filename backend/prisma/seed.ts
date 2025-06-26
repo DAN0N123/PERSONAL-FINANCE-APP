@@ -5,7 +5,9 @@ import * as bcrypt from 'bcrypt';
 const prisma = new PrismaClient();
 
 async function main() {
-  const hashedPassword = await bcrypt.hash('adminadmin', 10);
+  //DONT KNOW WHATS GOING ON WILL CHECK OUT LATER
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
+  const hashedPassword: string = await bcrypt.hash('adminadmin', 10);
   await prisma.user.create({
     data: {
       name: 'admin',
@@ -86,12 +88,33 @@ async function main() {
   });
 
   // Bills
+
   await prisma.bill.createMany({
-    data: Array.from({ length: 50 }).map(() => ({
-      status: faker.helpers.arrayElement(['PAID', 'DUE', 'UPCOMING']),
-      amount: Number(faker.finance.amount({ min: 20, max: 200, dec: 2 })),
-      userId: 1,
-    })),
+    data: Array.from({ length: 50 }).map(() => {
+      const type = faker.helpers.arrayElement(['MONTHLY', 'ONETIME']);
+      const payees = [
+        'Netflix',
+        'Spotify',
+        'Amazon',
+        'AT&T',
+        'Verizon',
+        'Apple',
+        'Google',
+        faker.company.name(),
+        faker.company.name(),
+      ];
+      return {
+        status: faker.helpers.arrayElement(['PAID', 'DUE', 'UPCOMING']),
+        type,
+        amount: Number(faker.finance.amount({ min: 20, max: 200, dec: 2 })),
+        payee: faker.helpers.arrayElement(payees),
+        dueDay:
+          type === 'MONTHLY' ? faker.number.int({ min: 1, max: 28 }) : null,
+        dueExactDate:
+          type === 'ONETIME' ? faker.date.future({ years: 1 }) : null,
+        userId: 1,
+      };
+    }),
   });
 
   // Transactions
@@ -130,4 +153,6 @@ main()
     console.error(e);
     process.exit(1);
   })
-  .finally(() => prisma.$disconnect());
+  .finally(() => {
+    prisma.$disconnect();
+  });

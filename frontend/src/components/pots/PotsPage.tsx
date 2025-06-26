@@ -54,7 +54,7 @@ export default function PotsPage() {
   }
 
   return (
-    <div className="flex flex-col gap-[32px] pb-[20%] md:pb-[10%] h-fit xl:pb-[24px] xl:pt-[24px] xl:pl-[16px] xl:pr-[48px] w-full xl:ml-[var(--sidebar-width)]">
+    <div className="flex flex-col gap-[32px] pb-[20%] h-fit xl:pb-[24px] xl:pt-[24px] xl:pl-[16px] xl:pr-[48px] w-full xl:ml-[var(--sidebar-width)]">
       {modalActive && (
         <PotsForm
           title={"Add New Pot"}
@@ -81,9 +81,11 @@ export default function PotsPage() {
           + Add New Pot
         </button>
       </div>
-      {pots.map((pot: Pot) => {
-        return <PotTile data={pot} usedColors={usedColors}></PotTile>;
-      })}
+      <div className="flex flex-col gap-[32px] h-fit xl:grid xl:grid-cols-2">
+        {pots.map((pot: Pot) => {
+          return <PotTile data={pot} usedColors={usedColors}></PotTile>;
+        })}
+      </div>
     </div>
   );
 }

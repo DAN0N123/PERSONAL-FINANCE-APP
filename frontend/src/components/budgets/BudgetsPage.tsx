@@ -89,7 +89,7 @@ export default function BudgetsPage() {
   }
 
   return (
-    <div className="isolate relative flex flex-col gap-[32px] pb-[20%] md:pb-[10%] h-fit xl:pb-[24px] xl:pt-[24px] xl:pl-[16px] xl:pr-[48px] w-full xl:ml-[var(--sidebar-width)]">
+    <div className="isolate relative flex flex-col gap-[32px] pb-[20%] h-fit xl:pb-[24px] xl:pt-[24px] xl:pl-[16px] xl:pr-[48px] w-full xl:ml-[var(--sidebar-width)]">
       {modalActive && (
         <BudgetForm
           buttonText={"Add Budget"}

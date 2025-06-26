@@ -52,10 +52,20 @@ enum BillStatus {
   UPCOMING
 }
 
+enum BillType {
+  MONTHLY
+  ONETIME
+}
+
 model Bill {
   id     Int    @id @default(autoincrement())
   status   BillStatus
-  amount Float
+  amount  Float
+  type  BillType
+  dueDay Float?
+  dueExactDate DateTime?
+
+  payee String
   user   User @relation(fields: [userId], references: [id])
   userId Int
 }
